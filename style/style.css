@@ -1,4 +1,11 @@
 /* CSS */
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
 body {
     background-image: url(/assets-img/Padel-tenis-comunidad.jpg);
     background-size: cover;
