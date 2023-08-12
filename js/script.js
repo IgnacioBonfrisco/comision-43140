@@ -262,3 +262,21 @@ const dueño = {
   cuentaBancaria: "12345"
 };
 // FIN ---- Función para pagar la couta de socio
+
+// Funcion Librerias
+
+function mostrarConfirmacion(mensaje) {
+  Swal.fire({
+    title: '¡Éxito!',
+    text: mensaje,
+    icon: 'success',
+    timer: 3000, // Cambia el tiempo de visualización si lo deseas
+    showConfirmButton: false
+  });
+}
+
+mostrarConfirmacion(`Registro completado. ¡Bienvenido, ${socio.nombre}!`);
+mostrarConfirmacion(`Has reservado la ${cancha.nombre} para el día ${horarioReserva.dia} a las ${horarioReserva.hora}`);
+mostrarConfirmacion(`El socio ${nombreSocio} ha pagado ${cantidadCuotas} cuota(s) a la cuenta ${dueño.cuentaBancaria}.`);
+
+
