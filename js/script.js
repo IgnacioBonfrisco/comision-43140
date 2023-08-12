@@ -276,16 +276,6 @@ const dueño = {
   cuentaBancaria: "12345" 
 };
 
-window.addEventListener('load', function() {
-  const conectarSociosBtn = document.createElement('button');
-  conectarSociosBtn.textContent = 'Conectar Socios';
-  
-  conectarSociosBtn.addEventListener('click', function() {
-  });
-  
-  document.body.appendChild(conectarSociosBtn);
-});
-
 
   // Mostrar el formulario en el contenido
   contenidoDiv.innerHTML = '';
@@ -294,6 +284,7 @@ window.addEventListener('load', function() {
 
 // Recuperar los datos de socios almacenados en localStorage
 const storedSocios = localStorage.getItem('socios');
+
 const socios = storedSocios ? JSON.parse(storedSocios) : [
 ];
 
