@@ -270,7 +270,7 @@ function mostrarConfirmacion(mensaje) {
     title: '¡Éxito!',
     text: mensaje,
     icon: 'success',
-    timer: 3000, // Cambia el tiempo de visualización si lo deseas
+    timer: 1000, 
     showConfirmButton: false
   });
 }
