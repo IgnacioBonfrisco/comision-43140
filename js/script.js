@@ -52,9 +52,17 @@ function registroUsuario() {
     const contraseña = document.getElementById('contraseña').value;
 
     if (!nombre || !apellido || !usuario || !contraseña) {
-      mostrarMensaje("Todos los campos son obligatorios.");
-      return;
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Todos los campos son obligatorios.',
+      });
     }
+    Swal.fire({
+      icon: 'success',
+      title: 'Éxito',
+      text: `Registro completado. ¡Bienvenido, ${nombre} ${apellido}!`,
+    });
 
     // Validar que el usuario tenga letras y números;
     if (!/^[a-zA-Z0-9]+$/.test(usuario)) {
@@ -130,7 +138,7 @@ function volverInicio() {
 
 function reservaCancha() {
   const cancha = {
-    nombre: "Cancha 1",
+    nombre: "CentenarioPadelClub",
     horariosDisponibles: [
       { dia: "Miercoles", hora: "18:00" },
       { dia: "Miercoles", hora: "19:00" },
@@ -156,7 +164,7 @@ function reservaCancha() {
   form.innerHTML = `
     <h2>Reserva de Cancha</h2>
     <p>Horarios disponibles para la ${cancha.nombre}:</p>
-  `;
+    `;
 
   cancha.horariosDisponibles.forEach((horario, index) => {
     const input = document.createElement('input');
@@ -181,12 +189,22 @@ function reservaCancha() {
 
     const selectedOption = document.querySelector('input[name="horario"]:checked');
     if (!selectedOption) {
-      mostrarMensaje("Por favor, selecciona un horario.");
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Por favor, selecciona un horario.',
+      });
       return;
     }
 
     const indiceHorario = parseInt(selectedOption.value);
     const horarioReserva = cancha.horariosDisponibles[indiceHorario];
+
+    Swal.fire({
+      icon: 'success',
+      title: '¡Reserva exitosa!',
+      text: `Has reservado la ${cancha.nombre} para el día ${horarioReserva.dia} a las ${horarioReserva.hora}.`,
+    });
 
     mostrarMensaje(`Has reservado la ${cancha.nombre} para el día ${horarioReserva.dia} a las ${horarioReserva.hora}`);
     mostrarMenuInicio();
@@ -233,13 +251,41 @@ function pagarCuota() {
       mostrarMensaje(`La cuenta bancaria ingresada no coincide con la cuenta del dueño.`);
       return ;
     }
-    
 
     socioEncontrado.cuota -= cantidadCuotas;
     mostrarMensaje(`El socio ${nombreSocio} ha pagado ${cantidadCuotas} cuota(s) a la cuenta ${dueño.cuentaBancaria}.`);
 
     mostrarMenuInicio();
   });
+
+  // Definición de socios
+const socios = [
+  {
+    nombre: "Socio1",
+    cuota: 12 
+  },
+  {
+    nombre: "Socio2",
+    cuota: 12 
+  },
+
+];
+
+// Datos del dueño
+const dueño = {
+  cuentaBancaria: "12345" 
+};
+
+window.addEventListener('load', function() {
+  const conectarSociosBtn = document.createElement('button');
+  conectarSociosBtn.textContent = 'Conectar Socios';
+  
+  conectarSociosBtn.addEventListener('click', function() {
+  });
+  
+  document.body.appendChild(conectarSociosBtn);
+});
+
 
   // Mostrar el formulario en el contenido
   contenidoDiv.innerHTML = '';
@@ -248,35 +294,11 @@ function pagarCuota() {
 
 // Recuperar los datos de socios almacenados en localStorage
 const storedSocios = localStorage.getItem('socios');
-
-// Array socios
 const socios = storedSocios ? JSON.parse(storedSocios) : [
-  new Socio("Socio 1", 12),
-  new Socio("Socio 2", 18),
-  new Socio("Socio 3", 6)
 ];
 
-// Declaración del objeto Dueño
-const dueño = {
-  nombre: "Dueño",
-  cuentaBancaria: "12345"
-};
 // FIN ---- Función para pagar la couta de socio
 
-// Funcion Librerias
 
-function mostrarConfirmacion(mensaje) {
-  Swal.fire({
-    title: '¡Éxito!',
-    text: mensaje,
-    icon: 'success',
-    timer: 1000,
-    showConfirmButton: false
-  });
-}
-
-mostrarConfirmacion(`Registro completado. ¡Bienvenido, ${socio.nombre}!`);
-mostrarConfirmacion(`Has reservado la ${cancha.nombre} para el día ${horarioReserva.dia} a las ${horarioReserva.hora}`);
-mostrarConfirmacion(`El socio ${nombreSocio} ha pagado ${cantidadCuotas} cuota(s) a la cuenta ${dueño.cuentaBancaria}.`);
 
 
