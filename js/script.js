@@ -221,12 +221,20 @@ function pagarCuota() {
   // Crear formulario para el pago de cuota
   const form = document.createElement('form');
   form.innerHTML = `
-    <h2>Pago de Cuota</h2>
-    <label>Nombre del Socio: <input type="text" id="nombreSocio" required></label>
-    <label>Cantidad de Cuotas: <input type="number" id="cantidadCuotas" min="1" required></label>
-    <label>Cuenta Bancaria del Dueño: <input type="text" id="cuentaDueño" required></label>
-    <button type="submit">Pagar</button>
-  `;
+  <h2>Pago de Cuota</h2>
+  <label>Nombre del Socio:</label>
+  <select id="nombreSocio" required>
+    <option value="" disabled selected>Selecciona un socio</option>
+    ${socios.map(socio => `<option value="${socio.nombre}">${socio.nombre}</option>`).join('')}
+  </select>
+  <label>Cantidad de Cuotas: <input type="number" id="cantidadCuotas" min="1" required></label>
+  <label>Cuenta Bancaria del Dueño:</label>
+  <select id="cuentaDueño" required>
+    <option value="" disabled selected>Selecciona una cuenta</option>
+    <option value="${dueño.cuentaBancaria}">${dueño.cuentaBancaria}</option>
+  </select>
+  <button type="submit">Pagar</button>
+`;
 
   form.addEventListener('submit', function(event) {
     event.preventDefault();
@@ -255,38 +263,43 @@ function pagarCuota() {
     socioEncontrado.cuota -= cantidadCuotas;
     mostrarMensaje(`El socio ${nombreSocio} ha pagado ${cantidadCuotas} cuota(s) a la cuenta ${dueño.cuentaBancaria}.`);
 
+    Swal.fire({
+      icon: 'success',
+      title: '¡Pago Exitoso!',
+      text: `Has pagado ${cantidadCuotas} cuota(s) con éxito.`,
+    });
+
     mostrarMenuInicio();
   });
-
-  // Definición de socios
-const socios = [
-  {
-    nombre: "Socio1",
-    cuota: 12 
-  },
-  {
-    nombre: "Socio2",
-    cuota: 12 
-  },
-
-];
-
-// Datos del dueño
-const dueño = {
-  cuentaBancaria: "12345" 
-};
-
 
   // Mostrar el formulario en el contenido
   contenidoDiv.innerHTML = '';
   contenidoDiv.appendChild(form);
 }
 
+  // Definición de socios
+  const socios = [
+    {
+      nombre: "Socio1",
+      cuota: 12 
+    },
+    {
+      nombre: "Socio2",
+      cuota: 12 
+    },
+  
+  ];
+  
+  // Datos del dueño
+  const dueño = {
+    cuentaBancaria: "12345" 
+  };
+  
+
 // Recuperar los datos de socios almacenados en localStorage
 const storedSocios = localStorage.getItem('socios');
 
-const socios = storedSocios ? JSON.parse(storedSocios) : [
-];
+const sociosAlmacenados = storedSocios ? JSON.parse(storedSocios) : [];
 
 // FIN ---- Función para pagar la couta de socio
 

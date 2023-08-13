@@ -34,8 +34,8 @@ body {
 }
 
 button {
-    display: block; /* Hace que los botones sean elementos de bloque */
-    margin: 10px auto; /* Agrega margen entre los botones y los centra horizontalmente */
+    display: block; 
+    margin: 10px auto; 
     padding: 10px 20px;
     font-size: 16px;
     font-weight: bold;
@@ -46,7 +46,6 @@ button {
     cursor: pointer;
 }
 
-/* Resto del CSS (sin cambios) */
 form {
     max-width: 400px;
     margin: 0 auto;
@@ -67,6 +66,13 @@ label {
 input[type="text"],
 input[type="password"],
 input[type="number"] {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+select {
     width: 100%;
     padding: 8px;
     margin-bottom: 15px;
