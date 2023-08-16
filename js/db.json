@@ -1,0 +1,52 @@
+{
+    "Clima": [
+        {
+            "dia": "Lunes",
+            "horarios": [
+                { "hora": "10:00", "temperatura": 20, "descripcion": "Parcialmente nublado" },
+                { "hora": "14:00", "temperatura": 23, "descripcion": "Soleado" },
+                { "hora": "18:00", "temperatura": 22, "descripcion": "Soleado" }
+            ]
+        },
+        {
+            "dia": "Martes",
+            "horarios": [
+                { "hora": "10:00", "temperatura": 23, "descripcion": "Nublado" },
+                { "hora": "14:00", "temperatura": 19, "descripcion": "Soleado" },
+                { "hora": "18:00", "temperatura": 25, "descripcion": "Soleado" }
+            ]
+        },
+        {
+            "dia": "Miercoles",
+            "horarios": [
+                { "hora": "10:00", "temperatura": 28, "descripcion": "Parcialmente nublado" },
+                { "hora": "14:00", "temperatura": 30, "descripcion": "Parcialmente nublado" },
+                { "hora": "18:00", "temperatura": 31, "descripcion": "Soleado" }
+            ]
+        },
+        {
+            "dia": "Jueves",
+            "horarios": [
+                { "hora": "10:00", "temperatura": 27, "descripcion": "Soleado" },
+                { "hora": "14:00", "temperatura": 28, "descripcion": "Soleado" },
+                { "hora": "18:00", "temperatura": 30, "descripcion": "Soleado" }
+            ]
+        },
+        {
+            "dia": "Viernes",
+            "horarios": [
+                { "hora": "10:00", "temperatura": 12, "descripcion": "Nublado" },
+                { "hora": "14:00", "temperatura": 16, "descripcion": "Nublado" },
+                { "hora": "18:00", "temperatura": 14, "descripcion": "Nublado" }
+            ]
+        },
+        {
+            "dia": "Sabado",
+            "horarios": [
+                { "hora": "10:00", "temperatura": 26, "descripcion": "Soleado" },
+                { "hora": "14:00", "temperatura": 28, "descripcion": "Soleado" },
+                { "hora": "18:00", "temperatura": 30, "descripcion": "Soleado" }
+            ]
+        }
+    ]
+}

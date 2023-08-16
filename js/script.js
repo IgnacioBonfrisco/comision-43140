@@ -134,28 +134,33 @@ function volverInicio() {
 
 // FIN ---- Función mostrar menu
 
+const url = "../js/db.json";
+
+
 // Función para la reserva de la cancha
 
 function reservaCancha() {
   const cancha = {
     nombre: "CentenarioPadelClub",
     horariosDisponibles: [
+      { dia: "Lunes", hora: "10:00" },
+      { dia: "Lunes", hora: "14:00" },
+      { dia: "Lunes", hora: "18:00" },
+      { dia: "Martes", hora: "10:00" },
+      { dia: "Martes", hora: "14:00" },
+      { dia: "Martes", hora: "18:00" },
+      { dia: "Miercoles", hora: "10:00" },
+      { dia: "Miercoles", hora: "14:00" },
       { dia: "Miercoles", hora: "18:00" },
-      { dia: "Miercoles", hora: "19:00" },
-      { dia: "Miercoles", hora: "20:00" },
-      { dia: "Miercoles", hora: "21:00" },
+      { dia: "Jueves", hora: "10:00" },
+      { dia: "Jueves", hora: "14:00" },
       { dia: "Jueves", hora: "18:00" },
-      { dia: "Jueves", hora: "19:00" },
-      { dia: "Jueves", hora: "20:00" },
-      { dia: "Jueves", hora: "21:00" },
+      { dia: "Viernes", hora: "10:00" },
+      { dia: "Viernes", hora: "14:00" },
       { dia: "Viernes", hora: "18:00" },
-      { dia: "Viernes", hora: "19:00" },
-      { dia: "Viernes", hora: "20:00" },
-      { dia: "Viernes", hora: "21:00" },
       { dia: "Sabado", hora: "18:00" },
       { dia: "Sabado", hora: "19:00" },
       { dia: "Sabado", hora: "20:00" },
-      { dia: "Sabado", hora: "21:00" },
     ],
   };
     // Crear formulario para la reserva de cancha
@@ -198,33 +203,32 @@ function reservaCancha() {
   
       const indiceHorario = parseInt(selectedOption.value);
       const horarioReserva = cancha.horariosDisponibles[indiceHorario];
+
+      const diaSeleccionado = horarioReserva.dia;
+      const horaSeleccionada = horarioReserva.hora;
   
       try {
-        const apiKey = 'd5347874c15895fb0b8afcd9ffe7ca23';
-        const ciudad = 'Pueblo Centenario,uy';
-  
-        const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${ciudad}&appid=${apiKey}&units=metric`);
-        const data = await response.json();
-  
-        if (response.ok) {
-          const climaCentenario = document.getElementById('clima-centenario');
-          climaCentenario.innerHTML = `
-            <h3>Condiciones climáticas en ${ciudad}:</h3>
-            <p>Temperatura: ${data.main.temp}°C</p>
-            <p>Descripción: ${data.weather[0].description}</p>
-          `;
-        } else {
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'No se pudo obtener la información del clima.',
-          });
+        const response = await fetch(url);
+        const datosClima = await response.json();
+    
+        const infoClima = datosClima.Clima.find(dia => dia.dia === diaSeleccionado);
+        if (infoClima) {
+          const horarioClima = infoClima.horarios.find(horario => horario.hora === horaSeleccionada);
+          if (horarioClima) {
+            const climaCentenario = document.getElementById('clima-centenario');
+            climaCentenario.innerHTML = `
+              <h3>Condiciones climáticas en ${cancha.nombre}:</h3>
+              <p>Día: ${diaSeleccionado} - Hora: ${horaSeleccionada}</p>
+              <p>Temperatura: ${horarioClima.temperatura}°C</p>
+              <p>Descripción: ${horarioClima.descripcion}</p>
+            `;
+          }
         }
       } catch (error) {
         Swal.fire({
           icon: 'error',
           title: 'Error',
-          text: 'Ha ocurrido un error al obtener la información del clima.',
+          text: 'Ha ocurrido un error al cargar los datos climáticos.',
         });
       }
   
