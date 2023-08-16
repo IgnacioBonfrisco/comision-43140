@@ -215,13 +215,14 @@ async function reservaCancha() {
         if (infoClima) {
           const horarioClima = infoClima.horarios.find(horario => horario.hora === horaSeleccionada);
           if (horarioClima) {
-            const climaCentenario = document.getElementById('clima-centenario');
-            climaCentenario.innerHTML = `
+            const infoClimaDiv = document.createElement('div');
+            infoClimaDiv.innerHTML = `
               <h3>Condiciones climáticas en ${cancha.nombre}:</h3>
               <p>Día: ${diaSeleccionado} - Hora: ${horaSeleccionada}</p>
               <p>Temperatura: ${horarioClima.temperatura}°C</p>
               <p>Descripción: ${horarioClima.descripcion}</p>
             `;
+            contenidoDiv.appendChild(infoClimaDiv);
           }
         }
       } catch (error) {
