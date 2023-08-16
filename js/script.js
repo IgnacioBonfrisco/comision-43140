@@ -158,62 +158,91 @@ function reservaCancha() {
       { dia: "Sabado", hora: "21:00" },
     ],
   };
-
-  // Crear formulario para la reserva de cancha
-  const form = document.createElement('form');
-  form.innerHTML = `
-    <h2>Reserva de Cancha</h2>
-    <p>Horarios disponibles para la ${cancha.nombre}:</p>
-    `;
-
-  cancha.horariosDisponibles.forEach((horario, index) => {
-    const input = document.createElement('input');
-    input.type = 'radio';
-    input.name = 'horario';
-    input.value = index;
-
-    const label = document.createElement('label');
-    label.textContent = `${horario.dia} - ${horario.hora}`;
-    label.appendChild(input);
-
-    form.appendChild(label);
-  });
-
-  const btnReservar = document.createElement('button');
-  btnReservar.type = 'submit';
-  btnReservar.textContent = 'Reservar';
-  form.appendChild(btnReservar);
-
-  form.addEventListener('submit', function(event) {
-    event.preventDefault();
-
-    const selectedOption = document.querySelector('input[name="horario"]:checked');
-    if (!selectedOption) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'Por favor, selecciona un horario.',
-      });
-      return;
-    }
-
-    const indiceHorario = parseInt(selectedOption.value);
-    const horarioReserva = cancha.horariosDisponibles[indiceHorario];
-
-    Swal.fire({
-      icon: 'success',
-      title: '¡Reserva exitosa!',
-      text: `Has reservado la ${cancha.nombre} para el día ${horarioReserva.dia} a las ${horarioReserva.hora}.`,
+    // Crear formulario para la reserva de cancha
+    const form = document.createElement('form');
+    form.innerHTML = `
+      <h2>Reserva de Cancha</h2>
+      <p>Horarios disponibles para la ${cancha.nombre}:</p>
+      `;
+  
+    cancha.horariosDisponibles.forEach((horario, index) => {
+      const input = document.createElement('input');
+      input.type = 'radio';
+      input.name = 'horario';
+      input.value = index;
+  
+      const label = document.createElement('label');
+      label.textContent = `${horario.dia} - ${horario.hora}`;
+      label.appendChild(input);
+  
+      form.appendChild(label);
     });
+  
+    const btnReservar = document.createElement('button');
+    btnReservar.type = 'submit';
+    btnReservar.textContent = 'Reservar';
+    form.appendChild(btnReservar);
+  
+    form.addEventListener('submit', async function(event) {  
+      event.preventDefault();
+  
+      const selectedOption = document.querySelector('input[name="horario"]:checked');
+      if (!selectedOption) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Por favor, selecciona un horario.',
+        });
+        return;
+      }
+  
+      const indiceHorario = parseInt(selectedOption.value);
+      const horarioReserva = cancha.horariosDisponibles[indiceHorario];
+  
+      try {
+        const apiKey = 'd5347874c15895fb0b8afcd9ffe7ca23';
+        const ciudad = 'Pueblo Centenario,uy';
+  
+        const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${ciudad}&appid=${apiKey}&units=metric`);
+        const data = await response.json();
+  
+        if (response.ok) {
+          const climaCentenario = document.getElementById('clima-centenario');
+          climaCentenario.innerHTML = `
+            <h3>Condiciones climáticas en ${ciudad}:</h3>
+            <p>Temperatura: ${data.main.temp}°C</p>
+            <p>Descripción: ${data.weather[0].description}</p>
+          `;
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No se pudo obtener la información del clima.',
+          });
+        }
+      } catch (error) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Ha ocurrido un error al obtener la información del clima.',
+        });
+      }
+  
+      Swal.fire({
+        icon: 'success',
+        title: '¡Reserva exitosa!',
+        text: `Has reservado la ${cancha.nombre} para el día ${horarioReserva.dia} a las ${horarioReserva.hora}.`,
+      });
+  
+      mostrarMensaje(`Has reservado la ${cancha.nombre} para el día ${horarioReserva.dia} a las ${horarioReserva.hora}`);
+      mostrarMenuInicio();
+    });
+  
+    // Mostrar el formulario en el contenido
+    contenidoDiv.innerHTML = '';
+    contenidoDiv.appendChild(form);
+  }
 
-    mostrarMensaje(`Has reservado la ${cancha.nombre} para el día ${horarioReserva.dia} a las ${horarioReserva.hora}`);
-    mostrarMenuInicio();
-  });
-
-  // Mostrar el formulario en el contenido
-  contenidoDiv.innerHTML = '';
-  contenidoDiv.appendChild(form);
-}
 // FIN ---- Función para la reserva de la cancha
 
 // Función para pagar la cuota de socio
