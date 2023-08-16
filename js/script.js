@@ -134,7 +134,7 @@ function volverInicio() {
 
 // FIN ---- Función mostrar menu
 
-const url = "../js/db.json";
+const url = "./db.json";
 
 
 // Función para la reserva de la cancha
