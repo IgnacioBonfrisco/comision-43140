@@ -139,7 +139,7 @@ const url = "../js/db.json";
 
 // Función para la reserva de la cancha
 
-function reservaCancha() {
+async function reservaCancha() {
   const cancha = {
     nombre: "CentenarioPadelClub",
     horariosDisponibles: [
