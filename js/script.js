@@ -118,7 +118,7 @@ function reservaCancha() {
     const socioReserva = document.getElementById('socioReserva').value;
     const fechaHora = new Date(document.getElementById('fechaHora').value);
 
-    const diaSemana = fechaHora.getDay(); // 0 (domingo) a 6 (sábado)
+    const diaSemana = fechaHora.getDay(); 
     const hora = fechaHora.getHours();
 
     if (diaSemana >= 1 && diaSemana <= 5 && hora >= 18 && hora < 22) {
@@ -128,7 +128,7 @@ function reservaCancha() {
         mostrarMensaje(`El socio ${socioReserva} no existe.`);
         return;
       }
-      fetch('url_de_tu_servidor_de_correo', {
+      fetch('./socios.json', {
         method: 'POST',
         body: JSON.stringify({
           to: socioEncontrado.correo,
@@ -150,6 +150,11 @@ function reservaCancha() {
       mostrarMensaje(`La cancha ha sido reservada por ${socioReserva} el ${fechaHora}.`);
       mostrarMenuInicio();
     } else {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error en la Reserva',
+        text: 'Las reservas solo son válidas de lunes a viernes, entre las 18:00 y las 22:00.',
+      });
       mostrarMensaje("Las reservas solo son válidas de lunes a viernes, entre las 18:00 y las 22:00.");
     }
   });
@@ -175,7 +180,6 @@ async function cargarDatosSocios() {
 cargarDatosSocios().then(sociosData => {
   console.log('Datos de socios cargados:', sociosData);
 });
-
 
 // Función mostrar menu
 
@@ -217,6 +221,7 @@ function volverInicio() {
 // FIN ---- Función mostrar menu
 
 // Función para pagar la cuota de socio
+
 function pagarCuota() {
   // Crear formulario para el pago de cuota
   const form = document.createElement('form');
@@ -276,6 +281,7 @@ function pagarCuota() {
   contenidoDiv.innerHTML = '';
   contenidoDiv.appendChild(form);
 }
+// FIN ---- Función para pagar la couta de socio
 
   // Definición de socios
   const socios = [
@@ -300,8 +306,6 @@ function pagarCuota() {
 const storedSocios = localStorage.getItem('socios');
 
 const sociosAlmacenados = storedSocios ? JSON.parse(storedSocios) : [];
-
-// FIN ---- Función para pagar la couta de socio
 
 
 

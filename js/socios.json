@@ -2,15 +2,15 @@
     {
     "nombre": "Socio1",
     "edad": 30,
-    "correo": "socio1@example.com",
-    "direccion": "Calle 123, Ciudad",
+    "correo": "socio1@hotmail.com",
+    "direccion": "Paysandu 926, Montevideo",
     "cuota": 12
     },
     {
     "nombre": "Socio2",
     "edad": 25,
-    "correo": "socio2@example.com",
-    "direccion": "Avenida XYZ, Otra Ciudad",
+    "correo": "socio2@hotmail.com",
+    "direccion": "Cerro Largo, Montevideo",
     "cuota": 12
     }
 ]
