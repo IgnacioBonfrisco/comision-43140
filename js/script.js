@@ -134,8 +134,28 @@ function volverInicio() {
 
 // FIN ---- Función mostrar menu
 
-const url = "./db.json";
+/*
+async function obtenerDatosClima(diaSeleccionado, horaSeleccionada) {
+  try {
+    const response = await fetch('./js/db.json'); // Asegúrate de ajustar la ruta
+    const datosClima = await response.json();
 
+    const infoDia = datosClima.Clima.find(dia => dia.dia === diaSeleccionado);
+    if (infoDia) {
+      const horarioClima = infoDia.horarios.find(horario => horario.hora === horaSeleccionada);
+      if (horarioClima) {
+        return {
+          temperatura: horarioClima.temperatura,
+          descripcion: horarioClima.descripcion
+        };
+      }
+    }
+    return null; // Devolver null si no se encuentra información climática
+  } catch (error) {
+    console.error('Error al obtener los datos climáticos:', error);
+    return null; // Manejar el error y devolver null
+  }
+}
 
 // Función para la reserva de la cancha
 
@@ -206,9 +226,25 @@ async function reservaCancha() {
 
       const diaSeleccionado = horarioReserva.dia;
       const horaSeleccionada = horarioReserva.hora;
+
+      const datosClima = await obtenerDatosClima(diaSeleccionado, horaSeleccionada);
+
+  if (datosClima) {
+    const infoClimaDiv = document.createElement('div');
+    infoClimaDiv.innerHTML = `
+      <h3>Condiciones climáticas en ${cancha.nombre}:</h3>
+      <p>Día: ${diaSeleccionado} - Hora: ${horaSeleccionada}</p>
+      <p>Temperatura: ${datosClima.temperatura}°C</p>
+      <p>Descripción: ${datosClima.descripcion}</p>
+    `;
+    contenidoDiv.appendChild(infoClimaDiv);
+  } else {
+    mostrarMensaje('No se encontraron datos climáticos para el día y la hora seleccionados.');
+  }
   
       try {
         const response = await fetch(url);
+        console.log(response)
         const datosClima = await response.json();
     
         const infoClima = datosClima.Clima.find(dia => dia.dia === diaSeleccionado);
@@ -247,7 +283,7 @@ async function reservaCancha() {
     contenidoDiv.innerHTML = '';
     contenidoDiv.appendChild(form);
   }
-
+*/
 // FIN ---- Función para la reserva de la cancha
 
 // Función para pagar la cuota de socio
