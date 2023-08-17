@@ -221,7 +221,6 @@ function volverInicio() {
 // FIN ---- Función mostrar menu
 
 // Función para pagar la cuota de socio
-
 function pagarCuota() {
   // Crear formulario para el pago de cuota
   const form = document.createElement('form');
