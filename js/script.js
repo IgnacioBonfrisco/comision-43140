@@ -13,7 +13,7 @@ class Cuenta {
   }
 }
 
-// Obtener referencia al botón de inicio
+// Referencia botón de inicio
 const iniciarBtn = document.getElementById('iniciarBtn');
 const mensajeDiv = document.getElementById('mensaje');
 const contenidoDiv = document.getElementById('contenido');
@@ -95,6 +95,88 @@ function registroUsuario() {
 
 // FIN ---- Funcion registro de usuario
 
+// Función para reservar una cancha
+
+function reservaCancha() {
+  // Crear formulario para la reserva de cancha
+  const form = document.createElement('form');
+  form.innerHTML = `
+    <h2>Reservar Cancha</h2>
+    <label>Socio:</label>
+    <select id="socioReserva" required>
+      <option value="" disabled selected>Selecciona un socio</option>
+      ${socios.map(socio => `<option value="${socio.nombre}">${socio.nombre}</option>`).join('')}
+    </select>
+    <label>Fecha y Hora:</label>
+    <input type="datetime-local" id="fechaHora" required>
+    <button type="submit">Reservar</button>
+  `;
+
+  form.addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const socioReserva = document.getElementById('socioReserva').value;
+    const fechaHora = new Date(document.getElementById('fechaHora').value);
+
+    const diaSemana = fechaHora.getDay(); // 0 (domingo) a 6 (sábado)
+    const hora = fechaHora.getHours();
+
+    if (diaSemana >= 1 && diaSemana <= 5 && hora >= 18 && hora < 22) {
+      const socioEncontrado = socios.find(socio => socio.nombre === socioReserva);
+
+      if (!socioEncontrado) {
+        mostrarMensaje(`El socio ${socioReserva} no existe.`);
+        return;
+      }
+      fetch('url_de_tu_servidor_de_correo', {
+        method: 'POST',
+        body: JSON.stringify({
+          to: socioEncontrado.correo,
+          subject: 'Reserva de Cancha Exitosa',
+          message: `Su reserva de cancha para el ${fechaHora} ha sido exitosa.`
+        }),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+  
+      // Mostrar SweetAlert de éxito
+      Swal.fire({
+        icon: 'success',
+        title: '¡Reserva Exitosa!',
+        text: `La cancha ha sido reservada por ${socioReserva} el ${fechaHora}.`,
+      });
+
+      mostrarMensaje(`La cancha ha sido reservada por ${socioReserva} el ${fechaHora}.`);
+      mostrarMenuInicio();
+    } else {
+      mostrarMensaje("Las reservas solo son válidas de lunes a viernes, entre las 18:00 y las 22:00.");
+    }
+  });
+
+  // Mostrar el formulario en el contenido
+  contenidoDiv.innerHTML = '';
+  contenidoDiv.appendChild(form);
+}
+
+// Función para cargar los datos de socios utilizando fetch
+async function cargarDatosSocios() {
+  try {
+    const response = await fetch('./socios.json');
+    const sociosData = await response.json();
+    return sociosData;
+  } catch (error) {
+    console.error('Error al cargar los datos de socios:', error);
+    return [];
+  }
+}
+
+// Cargar los datos de socios
+cargarDatosSocios().then(sociosData => {
+  console.log('Datos de socios cargados:', sociosData);
+});
+
+
 // Función mostrar menu
 
 function mostrarMenuInicio() {
@@ -133,158 +215,6 @@ function volverInicio() {
 }
 
 // FIN ---- Función mostrar menu
-
-/*
-async function obtenerDatosClima(diaSeleccionado, horaSeleccionada) {
-  try {
-    const response = await fetch('./js/db.json'); // Asegúrate de ajustar la ruta
-    const datosClima = await response.json();
-
-    const infoDia = datosClima.Clima.find(dia => dia.dia === diaSeleccionado);
-    if (infoDia) {
-      const horarioClima = infoDia.horarios.find(horario => horario.hora === horaSeleccionada);
-      if (horarioClima) {
-        return {
-          temperatura: horarioClima.temperatura,
-          descripcion: horarioClima.descripcion
-        };
-      }
-    }
-    return null; // Devolver null si no se encuentra información climática
-  } catch (error) {
-    console.error('Error al obtener los datos climáticos:', error);
-    return null; // Manejar el error y devolver null
-  }
-}
-
-// Función para la reserva de la cancha
-
-async function reservaCancha() {
-  const cancha = {
-    nombre: "CentenarioPadelClub",
-    horariosDisponibles: [
-      { dia: "Lunes", hora: "10:00" },
-      { dia: "Lunes", hora: "14:00" },
-      { dia: "Lunes", hora: "18:00" },
-      { dia: "Martes", hora: "10:00" },
-      { dia: "Martes", hora: "14:00" },
-      { dia: "Martes", hora: "18:00" },
-      { dia: "Miercoles", hora: "10:00" },
-      { dia: "Miercoles", hora: "14:00" },
-      { dia: "Miercoles", hora: "18:00" },
-      { dia: "Jueves", hora: "10:00" },
-      { dia: "Jueves", hora: "14:00" },
-      { dia: "Jueves", hora: "18:00" },
-      { dia: "Viernes", hora: "10:00" },
-      { dia: "Viernes", hora: "14:00" },
-      { dia: "Viernes", hora: "18:00" },
-      { dia: "Sabado", hora: "18:00" },
-      { dia: "Sabado", hora: "19:00" },
-      { dia: "Sabado", hora: "20:00" },
-    ],
-  };
-    // Crear formulario para la reserva de cancha
-    const form = document.createElement('form');
-    form.innerHTML = `
-      <h2>Reserva de Cancha</h2>
-      <p>Horarios disponibles para la ${cancha.nombre}:</p>
-      `;
-  
-    cancha.horariosDisponibles.forEach((horario, index) => {
-      const input = document.createElement('input');
-      input.type = 'radio';
-      input.name = 'horario';
-      input.value = index;
-  
-      const label = document.createElement('label');
-      label.textContent = `${horario.dia} - ${horario.hora}`;
-      label.appendChild(input);
-  
-      form.appendChild(label);
-    });
-  
-    const btnReservar = document.createElement('button');
-    btnReservar.type = 'submit';
-    btnReservar.textContent = 'Reservar';
-    form.appendChild(btnReservar);
-  
-    form.addEventListener('submit', async function(event) {  
-      event.preventDefault();
-  
-      const selectedOption = document.querySelector('input[name="horario"]:checked');
-      if (!selectedOption) {
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: 'Por favor, selecciona un horario.',
-        });
-        return;
-      }
-  
-      const indiceHorario = parseInt(selectedOption.value);
-      const horarioReserva = cancha.horariosDisponibles[indiceHorario];
-
-      const diaSeleccionado = horarioReserva.dia;
-      const horaSeleccionada = horarioReserva.hora;
-
-      const datosClima = await obtenerDatosClima(diaSeleccionado, horaSeleccionada);
-
-  if (datosClima) {
-    const infoClimaDiv = document.createElement('div');
-    infoClimaDiv.innerHTML = `
-      <h3>Condiciones climáticas en ${cancha.nombre}:</h3>
-      <p>Día: ${diaSeleccionado} - Hora: ${horaSeleccionada}</p>
-      <p>Temperatura: ${datosClima.temperatura}°C</p>
-      <p>Descripción: ${datosClima.descripcion}</p>
-    `;
-    contenidoDiv.appendChild(infoClimaDiv);
-  } else {
-    mostrarMensaje('No se encontraron datos climáticos para el día y la hora seleccionados.');
-  }
-  
-      try {
-        const response = await fetch(url);
-        console.log(response)
-        const datosClima = await response.json();
-    
-        const infoClima = datosClima.Clima.find(dia => dia.dia === diaSeleccionado);
-        if (infoClima) {
-          const horarioClima = infoClima.horarios.find(horario => horario.hora === horaSeleccionada);
-          if (horarioClima) {
-            const infoClimaDiv = document.createElement('div');
-            infoClimaDiv.innerHTML = `
-              <h3>Condiciones climáticas en ${cancha.nombre}:</h3>
-              <p>Día: ${diaSeleccionado} - Hora: ${horaSeleccionada}</p>
-              <p>Temperatura: ${horarioClima.temperatura}°C</p>
-              <p>Descripción: ${horarioClima.descripcion}</p>
-            `;
-            contenidoDiv.appendChild(infoClimaDiv);
-          }
-        }
-      } catch (error) {
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: 'Ha ocurrido un error al cargar los datos climáticos.',
-        });
-      }
-  
-      Swal.fire({
-        icon: 'success',
-        title: '¡Reserva exitosa!',
-        text: `Has reservado la ${cancha.nombre} para el día ${horarioReserva.dia} a las ${horarioReserva.hora}.`,
-      });
-  
-      mostrarMensaje(`Has reservado la ${cancha.nombre} para el día ${horarioReserva.dia} a las ${horarioReserva.hora}`);
-      mostrarMenuInicio();
-    });
-  
-    // Mostrar el formulario en el contenido
-    contenidoDiv.innerHTML = '';
-    contenidoDiv.appendChild(form);
-  }
-*/
-// FIN ---- Función para la reserva de la cancha
 
 // Función para pagar la cuota de socio
 function pagarCuota() {
