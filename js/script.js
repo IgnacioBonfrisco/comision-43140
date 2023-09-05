@@ -20,8 +20,14 @@ const contenidoDiv = document.getElementById('contenido');
 
 // Agregar evento al botón para iniciar el proceso
 iniciarBtn.addEventListener('click', function() {
-  mostrarMensaje("Bienvenido! ¿Quieres reservar una cancha? Primero crea un usuario.");
-  registroUsuario();
+  const registroRealizado = localStorage.getItem('registroRealizado');
+  if (registroRealizado) {
+    mostrarMensaje("Bienvenido de nuevo. ¿Qué deseas hacer?");
+    mostrarMenuInicio();
+  } else {
+    mostrarMensaje("Bienvenido! ¿Quieres reservar una cancha? Primero crea un usuario.");
+    registroUsuario();
+  }
 });
 
 function mostrarMensaje(mensaje) {
@@ -84,6 +90,9 @@ function registroUsuario() {
     socio.cuenta = new Cuenta(12345, "$");
 
     socios.push(socio); // Agregar el nuevo socio al array
+
+    //Registro exitoso
+    localStorage.setItem('registroRealizado', 'true');
 
     // Guardar los datos del socio en localStorage
     localStorage.setItem('socios', JSON.stringify(socios));
