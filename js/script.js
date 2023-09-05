@@ -72,7 +72,11 @@ function registroUsuario() {
 
     // Validar que la contraseña tenga letras y números;
     if (!/^(?=.*[a-zA-Z])(?=.*\d).{6,}$/.test(contraseña)) {
-      mostrarMensaje("La contraseña debe tener al menos 6 caracteres y contener al menos una letra y un número.");
+      Swal.fire({
+        icon: 'error',
+        title: 'Error en la Contraseña',
+        text: 'La contraseña debe tener al menos 6 caracteres y contener al menos una letra y un número.',
+      });
       return;
     }
 
