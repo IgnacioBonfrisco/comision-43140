@@ -131,6 +131,19 @@ function reservaCancha() {
     const socioReserva = document.getElementById('socioReserva').value;
     const fechaHora = new Date(document.getElementById('fechaHora').value);
 
+    // Obtener la fecha actual
+    const fechaActual = new Date();
+
+    // Verificar si la fecha seleccionada es estrictamente anterior a la fecha actual
+    if (fechaHora < fechaActual) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error en la Reserva',
+        text: 'No puedes reservar una cancha para una fecha anterior a la actual.',
+      });
+      return;
+    }
+
     const diaSemana = fechaHora.getDay(); 
     const hora = fechaHora.getHours();
 
