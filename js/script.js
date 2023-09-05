@@ -141,7 +141,7 @@ function reservaCancha() {
         mostrarMensaje(`El socio ${socioReserva} no existe.`);
         return;
       }
-      fetch('./socios.json', {
+      fetch('../socios.json', {
         method: 'POST',
         body: JSON.stringify({
           to: socioEncontrado.correo,
@@ -176,23 +176,6 @@ function reservaCancha() {
   contenidoDiv.innerHTML = '';
   contenidoDiv.appendChild(form);
 }
-
-// Función para cargar los datos de socios utilizando fetch
-async function cargarDatosSocios() {
-  try {
-    const response = await fetch('./socios.json');
-    const sociosData = await response.json();
-    return sociosData;
-  } catch (error) {
-    console.error('Error al cargar los datos de socios:', error);
-    return [];
-  }
-}
-
-// Cargar los datos de socios
-cargarDatosSocios().then(sociosData => {
-  console.log('Datos de socios cargados:', sociosData);
-});
 
 // Función mostrar menu
 
